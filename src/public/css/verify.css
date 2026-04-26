@@ -1,0 +1,50 @@
+/* プロジェクト共通の余白設定 */
+.verify-container {
+    max-width: 600px;
+    margin: 100px auto; /* ヘッダーの下に十分な余白 */
+    text-align: center; /* 中身をすべて中央寄せ */
+    padding: 0 20px;
+}
+
+/* メッセージのテキスト */
+.verify-message {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+/* 「認証はこちらから」ボタン */
+.btn-verify {
+    display: inline-block;
+    background-color: #ddd; /* 見本に合わせたグレー */
+    color: #333;
+    text-decoration: none;
+    padding: 12px 40px;
+    border-radius: 4px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+/* 「認証メールを再送する」リンクボタン */
+.btn-resend {
+    background: none;
+    border: none;
+    color: #3b82f6; /* 青いリンク色 */
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.btn-resend:hover {
+    text-decoration: underline;
+}
+
+/* 再送成功時のメッセージ */
+.success-message {
+    color: #28a745;
+    margin-top: 20px;
+    font-size: 14px;
+}

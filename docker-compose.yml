@@ -42,3 +42,10 @@ services:
             - "8080:80"
         depends_on:
             - mysql
+
+    mailpit:
+        image: axllent/mailpit:latest
+        container_name: "mailpit-docker-compose"
+        ports:
+            - "8025:8025" # ブラウザ表示用
+            - "1025:1025" # メール送信用

@@ -1,0 +1,9 @@
+/* public/css/register.css */
+/* 基本はログインと同様ですが、必要に応じて独自スタイルを追記してください */
+@import url('login.css');
+
+.register-notice {
+    font-size: 12px;
+    color: #666;
+    margin-top: 10px;
+}
