@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('css')
+    <link rel="stylesheet" href="{{ asset('css/edit.css') }}">
+@endpush
+
 @section('content')
 <div class="profile-edit-container">
     <h1 class="page-title">プロフィール設定</h1>

@@ -24,6 +24,16 @@ class ProfileController extends Controller
      */
     public function update(Request $request)
     {
-        // ここに保存処理を書いていきます（バリデーションなど）
+        $user = Auth::user();
+
+        // 1. プロフィール情報を保存
+        $user->name = $request->name;
+        $user->postcode = $request->postcode;
+        $user->address = $request->address;
+        $user->building = $request->building;
+        $user->save();
+
+        // 2. 保存が終わったら「トップページ」へ進む
+        return redirect('/')->with('message', 'プロフィールを設定しました。');
     }
 }
