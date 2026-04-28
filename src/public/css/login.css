@@ -44,3 +44,10 @@
     text-align: center;
     margin-top: 20px;
 }
+
+.error-message {
+    color: #ff4d4b; /* 赤色 */
+    font-size: 12px;
+    margin-top: 5px;
+    display: block; /* 改行して表示させる場合 */
+}

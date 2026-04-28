@@ -59,6 +59,7 @@
     font-size: 20px;
     margin-bottom: 10px;
     overflow: hidden;
+    position: relative;
 }
 
 .product-image-wrapper img {
@@ -72,11 +73,17 @@
     margin: 0;
 }
 
-.product-price {
-    font-size: 16px;
+.sold-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ff5a5f; /* アクティブタブと同じ赤色 */
+    color: white;
+    padding: 4px 12px;
     font-weight: bold;
-    margin-top: 5px;
-    color: #333;
+    font-size: 14px;
+    z-index: 5;
+    border-bottom-right-radius: 4px; /* 右下だけ少し丸くするとおしゃれです */
 }
 
 /* レスポンシブ対応：スマホでは2列にする場合 */

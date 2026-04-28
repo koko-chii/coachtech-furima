@@ -8,9 +8,12 @@
 <div class="index-container">
     {{-- タブ部分 --}}
     <div class="index-tabs">
-        <a href="/" class="tab-item {{ !request()->has('tab') ? 'active' : '' }}">おすすめ</a>
-        <a href="/?tab=mylist" class="tab-item {{ request()->get('tab') == 'mylist' ? 'active' : '' }}">マイリスト</a>
-    </div>
+    <a href="/?{{ http_build_query(array_merge(request()->query(), ['tab' => null])) }}" 
+        class="tab-item {{ !request()->has('tab') ? 'active' : '' }}">おすすめ</a>
+
+    <a href="/?{{ http_build_query(array_merge(request()->query(), ['tab' => 'mylist'])) }}" 
+        class="tab-item {{ request()->get('tab') == 'mylist' ? 'active' : '' }}">マイリスト</a>
+</div>
 
     {{-- 商品一覧表示（グリッド） --}}
     <div class="product-grid">
@@ -18,9 +21,11 @@
             <a href="/item/{{ $item->id }}" class="product-card">
                 <div class="product-image-wrapper">
                     <img src="{{ $item->img_url }}" alt="{{ $item->name }}">
+                    @if($item->is_sold)
+                        <div class="sold-badge">Sold</div>
+                    @endif
                 </div>
                 <p class="product-name">{{ $item->name }}</p>
-                <p class="product-price">¥{{ number_format($item->price) }}</p>
             </a>
         @endforeach
     </div>

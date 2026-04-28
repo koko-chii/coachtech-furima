@@ -1,0 +1,102 @@
+/* 商品詳細コンテナ */
+.detail-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    display: flex;
+    gap: 50px; /* 画像と情報の間の余白 */
+    padding: 0 20px;
+}
+
+/* 左側：画像エリア */
+.detail-image {
+    flex: 1; /* 幅を均等に分ける */
+    max-width: 500px;
+}
+
+.detail-image img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    background-color: #f9f9f9;
+}
+
+/* 右側：情報エリア */
+.detail-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-name {
+    font-size: 28px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.detail-brand {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.detail-price {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.detail-price span {
+    font-size: 14px;
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+/* いいねボタン部分 */
+.detail-actions {
+    margin-bottom: 30px;
+}
+
+.like-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.star-icon {
+    font-size: 32px;
+    color: #ccc; /* 通常時はグレー */
+}
+
+.star-icon.active {
+    color: #ff5a5f; /* いいね済みは赤 */
+}
+
+/* 商品説明 */
+.detail-description {
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.detail-description h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.detail-description p {
+    line-height: 1.6;
+    color: #333;
+    white-space: pre-wrap; /* 改行を反映させる */
+}
+
+/* レスポンシブ対応：画面が狭いときは縦並びに */
+@media (max-width: 768px) {
+    .detail-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
