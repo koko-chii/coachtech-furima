@@ -2,38 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+// 1. 作成したRequestをuseする
+use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
-    /**
-     * プロフィール編集画面（PG10）を表示する
-     */
     public function edit()
     {
-        // ログイン中のユーザー情報を取得
         $user = Auth::user();
-
-        // resources/views/profile/edit.blade.php を表示
         return view('profile.edit', compact('user'));
     }
 
     /**
-     * プロフィール情報を更新する
+     * 引数を ProfileUpdateRequest に変更
      */
-    public function update(Request $request)
+    public function update(ProfileUpdateRequest $request)
     {
         $user = Auth::user();
 
-        // 1. プロフィール情報を保存
-        $user->name = $request->name;
-        $user->postcode = $request->postcode;
-        $user->address = $request->address;
-        $user->building = $request->building;
-        $user->save();
+        // 2. バリデーション済みの値だけを取得して保存
+        // $request->all() でも良いですが、安全のためにfillを使うのが一般的です
+        $user->fill([
+            'name'     => $request->name,
+            'postcode' => $request->postcode,
+            'address'  => $request->address,
+            'building' => $request->building,
+        ])->save();
 
-        // 2. 保存が終わったら「トップページ」へ進む
         return redirect('/')->with('message', 'プロフィールを設定しました。');
     }
 }

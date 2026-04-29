@@ -11,13 +11,23 @@ body {
     padding: 15px 40px;
 }
 
+.main-container {
+    width: 100%;
+    max-width: 1200px; /* コンテンツが一番綺麗に見える幅 */
+    margin: 0 auto;    /* 中央寄せ */
+    padding: 0 20px;   /* 画面端の余白 */
+    box-sizing: border-box;
+}
+
+/* ヘッダーの幅も指示書に合わせて調整 */
 .header__inner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-    gap: 20px; /* 要素間の余白を確保 */
+    justify-content: space-between; /* これでロゴとナビを両端に広げます */
+    width: 100%;                   /* 画面いっぱいに広がる力を与える */
+    max-width: 1400px;             /* 1540pxの時でも離れすぎない上限 */
+    margin: 0 auto;                /* 中央に寄せる */
+    gap: 20px;
 }
 
 .header__logo {
@@ -26,8 +36,9 @@ body {
 
 /* 検索窓部分の調整 */
 .header__search {
-    flex-grow: 1; /* 中央のスペースを埋める */
-    max-width: 400px; /* 広がりすぎないよう制限 */
+    flex-grow: 1;
+    max-width: 400px;
+    margin: 0 20px; /* 左右に少し余白を作って独立させる */
 }
 
 .header__search-form {
@@ -71,4 +82,39 @@ body {
     text-decoration: none;
     font-weight: bold;
     white-space: nowrap;
+}
+
+.header__search-container {
+    position: relative;
+    width: 100%;
+}
+
+/* 検索窓の「×」ボタンの見た目 */
+.header__search-clear {
+    position: absolute;
+    right: 15px; /* 右からの位置 */
+    top: 50%;
+    transform: translateY(-50%); /* ちょうど真ん中に */
+    color: #333; /* 文字色：黒っぽく */
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    z-index: 10; /* 他の要素より上に */
+}
+
+.header__search-clear:hover {
+    color: #666;
+}
+
+/* 文字が「×」ボタンと重ならないように、入力欄の右側に余白を作る */
+.header__search-input {
+    padding-right: 35px !important;
+}
+
+/* common.css の例 */
+@media screen and (max-width: 850px) {
+    .header__inner {
+        flex-direction: column; /* 縦に並べる */
+        gap: 10px;
+    }
 }

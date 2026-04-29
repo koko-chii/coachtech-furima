@@ -22,14 +22,17 @@
             <form action="/item/{{ $item->id }}/like" method="POST">
                 @csrf
                 <button type="submit" class="like-button">
-                    {{-- いいね済みなら星を赤くする --}}
+                    {{-- ログイン済み 且つ いいね済み --}}
                     @if(Auth::check() && Auth::user()->likedItems->contains($item->id))
-                        <span class="star-icon active">★</span>
+                        <img src="{{ asset('img/liked.png') }}" alt="いいね済み" class="heart-icon">
                     @else
-                        <span class="star-icon">☆</span>
+                        {{-- 未ログイン、または未いいね --}}
+                        <img src="{{ asset('img/HeartLogo.png') }}" alt="いいね" class="heart-icon">
                     @endif
                 </button>
             </form>
+            {{-- いいね数を表示する場合（指示書に数値があるなら） --}}
+            <span class="like-count">{{ $item->likedByUsers()->count() }}</span>
         </div>
 
         <div class="detail-description">

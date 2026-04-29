@@ -9,7 +9,7 @@ class RegisterRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     public function rules(): array
@@ -29,7 +29,7 @@ class RegisterRequest extends FormRequest
             'email.email'        => 'メールアドレスはメール形式で入力してください',
             'password.required'  => 'パスワードを入力してください',
             'password.min'       => 'パスワードは8文字以上で入力してください',
-            'password.confirmed' => 'パスワードと一致しません',
+            'password.confirmed' => 'パスワードが一致しません',
         ];
     }
 }

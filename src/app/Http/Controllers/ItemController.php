@@ -3,60 +3,62 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
-use Illuminate\Http\Request;
+// 標準のRequestではなく、作成したカスタムRequestをインポートする
+use App\Http\Requests\ItemSearchRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
-    public function index(Request $request)
+    /**
+     * 引数を ItemSearchRequest に変更
+     */
+    public function index(ItemSearchRequest $request)
     {
         $user = auth()->user();
-        $tab = $request->query('tab');
-        $keyword = $request->query('keyword');
 
-        // 1. 認証とプロフィール設定のリダイレクト制御
         if ($user) {
-            // 【要件】メール認証がまだの場合、誘導画面へ飛ばす
+        // 1. メール認証がまだなら、誘導画面へ飛ばす
             if (!$user->hasVerifiedEmail()) {
                 return redirect()->route('verification.notice');
             }
 
-            // 【要件】プロフィール（郵便番号など）が未設定なら設定画面へ飛ばす
+            // 2. プロフィール（郵便番号）が未設定なら設定画面へ飛ばす
             if (empty($user->postcode)) {
                 return redirect('/mypage/profile');
             }
         }
 
-        // 2. タブによる取得データの切り替え（おすすめ vs マイリスト）
+        $tab = $request->getTab();
+        $keyword = $request->getKeyword();
+
+        // 1. 基本となるクエリを作成（Item::query() で開始すれば get() が必ず使える）
+        $query = Item::query();
+
         if ($tab === 'mylist') {
-            // 【FN015】マイリスト：自分がいいねした商品
-            if (!$user) {
-                // 未ログイン時は空にする
-                $items = collect();
+            if ($user) {
+                // ログイン中：自分がいいねした商品に絞り込む
+                $query = $user->likedItems();
             } else {
-                // Userモデルの likedItems リレーションを使用
-                $items = $user->likedItems();
+                // 未ログイン：1件もヒットしないように ID 0 で検索（空にする確実な方法）
+                $query->where('id', 0);
             }
         } else {
-            // 【FN014】おすすめ：全商品
-            $items = Item::query();
-
-            // 【FN014-4】ログイン中なら自分が出品した商品は除外
+            // おすすめ：自分以外の出品を表示
             if ($user) {
-                $items->where('user_id', '!=', $user->id);
+                $query->where('user_id', '!=', $user->id);
             }
         }
 
-        // 3. 【FN016】検索機能：商品名の部分一致検索（共通）
-        if (!empty($keyword)) {
-            $items->where('name', 'LIKE', '%' . $keyword . '%');
+        // 2. 検索キーワードがあれば絞り込み
+        if ($keyword) {
+            $query->where('name', 'LIKE', '%' . $keyword . '%');
         }
 
-        // 4. 最後にデータを取得
-        // $itemsがクエリビルダ（Item::query()等）の場合はget()を呼び出す
-        $finalItems = ($items instanceof \Illuminate\Support\Collection) ? $items : $items->get();
+        // 3. 最後にデータを取得
+        $items = $query->get();
 
         return view('index', [
-            'items' => $finalItems,
+            'items' => $items,
             'tab' => $tab,
             'keyword' => $keyword
         ]);
@@ -64,10 +66,23 @@ class ItemController extends Controller
 
     public function show($item_id)
     {
-        // IDを元に商品を取得（なければ404エラー）
-        $item = Item::findOrFail($item_id);
+        $user = auth()->user();
 
-        // item_detail.blade.php を表示
+        // ログインしている場合、メール認証とプロフィール設定をチェック
+        if ($user) {
+            // 1. メール認証がまだなら、誘導画面へ
+            if (!$user->hasVerifiedEmail()) {
+                return redirect()->route('verification.notice');
+            }
+
+            // 2. プロフィール未設定なら、プロフィール画面へ
+            if (empty($user->postcode)) {
+                return redirect('/mypage/profile');
+            }
+        }
+
+        // 両方クリアしている、または未ログイン（ゲスト）なら詳細を表示
+        $item = Item::findOrFail($item_id);
         return view('item_detail', compact('item'));
     }
 

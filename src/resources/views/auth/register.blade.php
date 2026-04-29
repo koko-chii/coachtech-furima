@@ -10,7 +10,7 @@
     {{-- h1に「auth-title」を追加 --}}
     <h1 class="auth-title">会員登録</h1>
 
-    <form action="{{ route('register') }}" method="POST" class="auth-form">
+    <form action="{{ route('register') }}" method="POST" class="auth-form" novalidate>
         @csrf
 
         {{-- 各入力エリアに「form-group」「form-label」「form-input」を追加 --}}
