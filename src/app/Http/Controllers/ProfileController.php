@@ -4,10 +4,27 @@ namespace App\Http\Controllers;
 
 // 1. 作成したRequestをuseする
 use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
+    public function index(Request $request)
+    {
+        $user = Auth::user();
+        $page = $request->query('page', 'sell'); // デフォルトは出品（sell）
+
+    if ($page === 'buy') {
+        // 購入した商品（Orderなどの中間テーブルから取得）
+        $items = $user->purchasedItems ?? []; // リレーションの設定が必要
+    } else {
+        // 出品した商品
+        $items = $user->items ?? [];
+    }
+
+        return view('mypage', compact('user','items', 'page'));
+    }
+
     public function edit()
     {
         $user = Auth::user();

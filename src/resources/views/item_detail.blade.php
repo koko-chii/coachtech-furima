@@ -8,14 +8,16 @@
 <div class="detail-container">
     {{-- 左側：商品画像 --}}
     <div class="detail-image">
-        <img src="{{ $item->img_url }}" alt="{{ $item->name }}">
+        <img src="{{ asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}">
     </div>
 
     {{-- 右側：商品情報 --}}
     <div class="detail-info">
         <h1 class="detail-name">{{ $item->name }}</h1>
         <p class="detail-brand">{{ $item->brand }}</p>
-        <p class="detail-price">¥{{ number_format($item->price) }} (税込)</p>
+        <p class="detail-price">
+            ¥{{ number_format($item->price) }} <span>(税込)</span>
+        </p>
 
         {{-- いいねボタン（FN015のトリガー） --}}
         <div class="detail-actions">

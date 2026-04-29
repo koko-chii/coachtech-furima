@@ -31,7 +31,9 @@ body {
 }
 
 .header__logo {
-    height: 25px;
+    height: 30px; /* 設計書のサイズに合わせて調整 */
+    width: auto;
+    object-fit: contain;
 }
 
 /* 検索窓部分の調整 */

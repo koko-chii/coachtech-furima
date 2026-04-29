@@ -6,9 +6,50 @@ use App\Models\Item;
 // 標準のRequestではなく、作成したカスタムRequestをインポートする
 use App\Http\Requests\ItemSearchRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
+    public function create()
+    {
+        return view('item_create'); // 出品用のBladeファイル名
+    }
+
+    // 出品内容を保存（ここが画像保存のメイン！）
+    public function store(Request $request)
+    {
+        // 1. バリデーション
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required|numeric',
+            'description' => 'required',
+            'img_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // 画像必須
+            'condition' => 'required',
+        ]);
+
+        // 2. 画像の保存処理 (storage/app/public/items に保存)
+        $path = "";
+        if ($request->hasFile('img_url')) {
+            // store('保存先フォルダ', 'ディスク名')
+            // これにより storage/app/public/items/ファイル名.jpg という形式で保存されます
+            $path = $request->file('img_url')->store('items', 'public');
+        }
+
+        // 3. データベースへ登録
+        Item::create([
+            'user_id' => auth()->id(),
+            'name' => $request->name,
+            'price' => $request->price,
+            'description' => $request->description,
+            'img_url' => $path, // 'items/xxx.jpg' のようなパスが保存される
+            'condition' => $request->condition,
+            'brand' => $request->brand,
+            'is_sold' => false,
+        ]);
+
+        return redirect('/')->with('message', '商品を出品しました');
+    }
+
     /**
      * 引数を ItemSearchRequest に変更
      */

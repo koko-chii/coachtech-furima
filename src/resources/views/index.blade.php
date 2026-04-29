@@ -20,7 +20,9 @@
         @foreach($items as $item)
             <a href="/item/{{ $item->id }}" class="product-card">
                 <div class="product-image-wrapper">
-                    <img src="{{ $item->img_url }}" alt="{{ $item->name }}">
+                    <img src="{{ asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}">
+
+                    {{-- 1. 売り切れの場合 --}}
                     @if($item->is_sold)
                         <div class="sold-badge">Sold</div>
                     @endif
