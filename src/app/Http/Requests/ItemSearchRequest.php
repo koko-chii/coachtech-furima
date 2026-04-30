@@ -6,17 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ItemSearchRequest extends FormRequest
 {
-    /**
-     * 誰でもこのリクエストを送れるように true を返す
-     */
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * バリデーションルール
-     */
     public function rules()
     {
         return [
@@ -25,9 +19,6 @@ class ItemSearchRequest extends FormRequest
         ];
     }
 
-    /**
-     * Controllerをスッキリさせるための独自メソッド
-     */
     public function getTab()
     {
         return $this->query('tab', 'recommend');

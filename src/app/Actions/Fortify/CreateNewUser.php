@@ -3,25 +3,17 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
-use App\Http\Requests\RegisterRequest; // 作成したRequestをインポート
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
 {
-    // PasswordValidationRules トレイトは RegisterRequest で管理するので削除
-
-    /**
-     * Validate and create a newly registered user.
-     *
-     * @param  array<string, string>  $input
-     */
     public function create(array $input): User
     {
         $request = new RegisterRequest();
 
-        // Validator::make の引数を RegisterRequest のメソッドに差し替え
         Validator::make(
             $input,
             $request->rules(),

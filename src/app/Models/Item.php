@@ -4,22 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Comment;
 
 class Item extends Model
 {
     use HasFactory;
 
-    // 保存を許可するカラムを指定
     protected $fillable = [
-        'name',
-        'price',
-        'brand',
-        'description',
-        'img_url',
-        'condition',
-        'user_id',
-        'is_sold'
+        'name','price','brand','description','img_url','condition','user_id','is_sold'
     ];
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 
     public function likedByUsers()
     {

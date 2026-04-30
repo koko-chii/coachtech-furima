@@ -1,10 +1,8 @@
-/* 全体コンテナ */
 .index-container {
-    max-width: 1200px; /* 画面幅に合わせて調整 */
+    max-width: 1200px;
     margin: 0 auto;
 }
 
-/* タブ部分 */
 .index-tabs {
     display: flex;
     border-bottom: 1px solid #ddd;
@@ -20,7 +18,6 @@
     transition: color 0.3s;
 }
 
-/* アクティブなタブ（赤線） */
 .tab-item.active {
     color: #ff5a5f;
     position: relative;
@@ -36,23 +33,21 @@
     background-color: #ff5a5f;
 }
 
-/* 商品グリッド（横に並べる設定） */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* レスポンシブ */
-    gap: 40px 20px; /* 上下左右の間隔 */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 40px 20px;
     padding: 20px;
 }
 
-/* 商品カード */
 .product-card {
     text-decoration: none;
     color: #333;
 }
 
 .product-image-wrapper {
-    aspect-ratio: 1 / 1; /* 正方形を維持 */
-    background-color: #d9d9d9; /* 画像がない時のグレー */
+    aspect-ratio: 1 / 1;
+    background-color: #d9d9d9;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,16 +72,15 @@
     position: absolute;
     top: 0;
     left: 0;
-    background-color: #ff5a5f; /* アクティブタブと同じ赤色 */
+    background-color: #ff5a5f;
     color: white;
     padding: 4px 12px;
     font-weight: bold;
     font-size: 14px;
     z-index: 5;
-    border-bottom-right-radius: 4px; /* 右下だけ少し丸くするとおしゃれです */
+    border-bottom-right-radius: 4px;
 }
 
-/* レスポンシブ対応：スマホでは2列にする場合 */
 @media (max-width: 600px) {
     .product-grid {
         grid-template-columns: repeat(2, 1fr);

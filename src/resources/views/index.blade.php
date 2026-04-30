@@ -6,7 +6,6 @@
 
 @section('content')
 <div class="index-container">
-    {{-- タブ部分 --}}
     <div class="index-tabs">
     <a href="/?{{ http_build_query(array_merge(request()->query(), ['tab' => null])) }}" 
         class="tab-item {{ !request()->has('tab') ? 'active' : '' }}">おすすめ</a>
@@ -15,14 +14,12 @@
         class="tab-item {{ request()->get('tab') == 'mylist' ? 'active' : '' }}">マイリスト</a>
 </div>
 
-    {{-- 商品一覧表示（グリッド） --}}
     <div class="product-grid">
         @foreach($items as $item)
             <a href="/item/{{ $item->id }}" class="product-card">
                 <div class="product-image-wrapper">
                     <img src="{{ asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}">
 
-                    {{-- 1. 売り切れの場合 --}}
                     @if($item->is_sold)
                         <div class="sold-badge">Sold</div>
                     @endif

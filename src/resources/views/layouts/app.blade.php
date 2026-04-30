@@ -6,27 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>coachtechフリマ</title>
 
-    {{-- 全画面共通のCSS --}}
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
 
-    {{-- 各ページ独自のCSSを読み込むためのスタック --}}
     @stack('css')
 </head>
 
 <body>
     <header class="header">
     <div class="header__inner">
-        {{-- ロゴ --}}
         <a href="/" class="header__logo-link">
             <img src="{{ asset('img/logo.png') }}" alt="COACHTECH" class="header__logo">
         </a>
 
-        {{-- 検索欄 --}}
         <div class="header__search">
             <form action="/" method="GET" class="header__search-form">
                 <input type="hidden" name="tab" value="{{ request('tab', 'recommend') }}">
 
-                {{-- この container クラスが重要です --}}
                 <div class="header__search-container">
                     <input type="text" name="keyword" value="{{ request('keyword') }}"
                         placeholder="なにをお探しですか？" class="header__search-input">
@@ -38,14 +33,12 @@
             </form>
         </div>
 
-        {{-- ナビゲーション --}}
         <nav class="header__nav">
             <ul class="header__nav-list">
                 @if(Auth::check())
                     <li class="header__nav-item">
                         <form action="/logout" method="POST" class="header__logout-form">
                             @csrf
-                            {{-- type="search" を "submit" に修正 --}}
                             <button type="submit" class="header__nav-link header__logout-btn">ログアウト</button>
                         </form>
                     </li>

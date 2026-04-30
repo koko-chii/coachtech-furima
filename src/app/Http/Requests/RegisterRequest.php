@@ -27,9 +27,15 @@ class RegisterRequest extends FormRequest
             'name.required'      => 'お名前を入力してください',
             'email.required'     => 'メールアドレスを入力してください',
             'email.email'        => 'メールアドレスはメール形式で入力してください',
+            'email.unique'       => 'このメールアドレスは既に登録されています',
             'password.required'  => 'パスワードを入力してください',
             'password.min'       => 'パスワードは8文字以上で入力してください',
             'password.confirmed' => 'パスワードと一致しません',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        // 特殊な処理が必要なければ、メッセージのキー指定だけで十分です。
     }
 }

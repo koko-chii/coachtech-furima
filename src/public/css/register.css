@@ -1,14 +1,11 @@
-/* 1. ログイン画面の共通デザインを読み込む */
 @import url('login.css');
 
-/* 2. 画面全体のレイアウト（これがないと崩れます！） */
 .register-container {
-    max-width: 400px;  /* 広い画面でもこれ以上広がらないようにする */
-    margin: 80px auto; /* 常に画面の真ん中に置く */
-    padding: 0 20px;   /* スマホの時に左右がくっつかないようにする */
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 0 20px;
 }
 
-/* 3. 中身のパーツ（あなたが書いてくれたコード） */
 .form-input {
     width: 100%;
     padding: 10px;
