@@ -10,7 +10,7 @@
             <p>登録していただいたメールアドレスに認証メールを送付しました。</p>
             <p>メール認証を完了してください。</p>
         </div>
-}
+
     <div>
         <a href="{{ route('verification.show') }}" class="btn-verify">
             認証はこちらから

@@ -44,20 +44,35 @@ docker compose up -d --build
 ```
 docker compose exec -u 1000 php composer install
 ```
-#### PHPライブラリのインストールPHPライブラリのインストール
-
-```
-npm install && npm run build
-```
 ### キー生成
 
 ```
 docker compose exec php php artisan key:generate
 ```
+### 画像の表示
+
+```
+docker compose exec php php artisan storage:link
+```
 #### 権限の付与
 
 ```
 docker compose exec php chmod -R 777 storage bootstrap/cache
+```
+#### ディレクトリの移動
+
+```
+cd src
+```
+#### PHPライブラリのインストールPHPライブラリのインストール
+
+```
+npm install && npm run build
+```
+#### ディレクトリの移動
+
+```
+cd ..
 ```
 ### マイグレーション・シーディングを実行
 
