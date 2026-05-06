@@ -32,6 +32,11 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
+        if ($request->hasFile('image')) {
+        $path = $request->file('image')->store('profiles', 'public');
+        $user->img_url = $path;
+    }
+
         $user->fill([
             'name'     => $request->name,
             'postcode' => $request->postcode,

@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Item;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Category;
 
 class ItemSeeder extends Seeder
 {
@@ -14,8 +15,20 @@ class ItemSeeder extends Seeder
      */
     public function run(): void
     {
-
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
+        \Illuminate\Support\Facades\DB::table('category_item')->truncate();
+        \App\Models\Item::truncate();
+        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
         $user = User::where('email', 'test@example.com')->first();
+
+        $categories = [
+            'ファッション', '家電', 'インテリア', 'レディース', 'メンズ',
+            'コスメ', '本', 'ゲーム', 'スポーツ', 'キッチン'
+        ];
+
+        foreach ($categories as $cat) {
+            Category::firstOrCreate(['name' => $cat]);
+        }
 
         $items = [
             [
@@ -107,13 +120,28 @@ class ItemSeeder extends Seeder
                 'img_url' => 'items/メイクセット.jpg',
                 'condition' => '目立った傷や汚れなし',
                 'user_id' => $user->id,
-                'is_sold' => true,
             ],
         ];
 
-        foreach ($items as $item) {
-            Item::create($item);
-        }
+        foreach ($items as $itemData) {
+            $item = Item::create($itemData);
 
+            $categoryName = match (true) {
+                str_contains($item->name, '腕時計') => 'ファッション',
+                str_contains($item->name, '革靴')   => 'ファッション',
+                str_contains($item->name, 'PC')     => '家電',
+                str_contains($item->name, 'HDD')    => '家電',
+                str_contains($item->name, 'マイク')  => '家電',
+                str_contains($item->name, 'メイク')  => 'コスメ',
+                str_contains($item->name, '玉ねぎ')  => 'キッチン',
+                str_contains($item->name, 'ミル')    => 'キッチン',
+                default => 'インテリア',
+            };
+
+            $category = \App\Models\Category::where('name', $categoryName)->first();
+            if ($category) {
+                $item->categories()->attach($category->id);
+            }
+        }
     }
 }
