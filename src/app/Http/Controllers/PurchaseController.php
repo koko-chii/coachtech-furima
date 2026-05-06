@@ -16,6 +16,12 @@ class PurchaseController extends Controller
         $item = Item::findOrFail($item_id);
         $user = Auth::user();
 
+        if (session('last_item_id') != $item_id) {
+            session()->forget('payment_method');
+        }
+
+        session(['last_item_id' => $item_id]);
+
         return view('purchase', compact('item', 'user'));
     }
 
@@ -34,7 +40,7 @@ class PurchaseController extends Controller
         }
 
         // Stripeの設定
-        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        Stripe::setApiKey(config('services.stripe.secret'));
 
         // 指示：コンビニ・カード両対応の決済画面を作成
         $session = Session::create([

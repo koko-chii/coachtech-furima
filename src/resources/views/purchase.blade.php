@@ -9,7 +9,7 @@
     <div class="purchase-content">
         <!-- 左側：詳細設定エリア -->
         <div class="purchase-main">
-            <!-- 商品情報：商品名をh1に -->
+            <!-- 商品情報 -->
             <div class="item-info">
                 <div class="item-image">
                     <img src="{{ asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}">
@@ -22,7 +22,7 @@
 
             <hr>
 
-            <!-- 支払い方法セクション：h2から開始 -->
+            <!-- 支払い方法セクション -->
             <div class="selection-section">
                 <h2>支払い方法</h2>
                 <div class="select-wrapper">
@@ -51,10 +51,10 @@
             <hr>
         </div>
 
-        <!-- 右側：決済確認エリア -->
-        <div class="purchase-side">
-            <div class="order-summary">
-                {{-- ここは表形式なので、見出しは使わずセマンティックに構成 --}}
+        <!-- 右側：決済確認エリア（ボタンをボックスの外に配置） -->
+        <div class="purchase-side-area">
+            {{-- 白い枠線のボックス --}}
+            <div class="purchase-side-box">
                 <table class="summary-table">
                     <tr>
                         <th>商品代金</th>
@@ -65,16 +65,17 @@
                         <td id="display-payment">{{ session('payment_method') ?: '未選択' }}</td>
                     </tr>
                 </table>
-
-                <form action="{{ route('purchase.store', ['item_id' => $item->id]) }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="payment_method" id="hidden-payment">
-
-                    <button type="submit" class="purchase-button" id="purchase-btn" disabled>
-                        購入する
-                    </button>
-                </form>
             </div>
+
+            {{-- 購入ボタン（ボックスのすぐ下、同じ幅で配置） --}}
+            <form action="{{ route('purchase.store', ['item_id' => $item->id]) }}" method="POST" class="purchase-form">
+                @csrf
+                <input type="hidden" name="payment_method" id="hidden-payment" value="{{ session('payment_method') }}">
+
+                <button type="submit" class="purchase-button" id="purchase-btn" {{ session('payment_method') ? '' : 'disabled' }}>
+                    購入する
+                </button>
+            </form>
         </div>
     </div>
 </div>

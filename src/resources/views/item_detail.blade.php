@@ -61,7 +61,7 @@
                     <td>
                         @if($item->categories && $item->categories->count() > 0)
                             @foreach($item->categories as $category)
-                                <span class="category-tag">{{ $category->content }}</span>
+                                <span class="category-tag">{{ $category->name }}</span>
                             @endforeach
                         @else
                             <span>カテゴリーなし</span>

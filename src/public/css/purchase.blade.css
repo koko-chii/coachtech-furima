@@ -1,25 +1,24 @@
-/* purchase-container */
+/* --- 全体レイアウト --- */
 .purchase-container {
     max-width: 1000px;
-    margin: 40px auto;
+    margin: 60px auto;
     padding: 0 20px;
 }
 
 .purchase-content {
     display: flex;
-    gap: 50px;
+    gap: 80px; /* 左右エリアの間隔 */
     align-items: flex-start;
 }
 
-/* 左側メインエリア */
+/* --- 左側：メインエリア --- */
 .purchase-main {
     flex: 2;
 }
 
 .item-info {
     display: flex;
-    align-items: center;
-    gap: 20px;
+    gap: 30px;
     margin-bottom: 20px;
 }
 
@@ -27,7 +26,6 @@
     width: 150px;
     height: 150px;
     object-fit: cover;
-    border-radius: 4px;
 }
 
 .item-detail h1 {
@@ -42,23 +40,83 @@
 
 hr {
     border: none;
-    border-top: 1px solid #ddd;
-    margin: 30px 0;
+    border-top: 1px solid #ccc;
+    margin: 40px 0;
 }
 
-/* 共通セクション */
+/* --- 右側：決済確認エリア --- */
+.purchase-side-area {
+    flex: 1;
+    min-width: 350px;
+}
+
+/* 白い枠線のボックス（仕切りの隙間をなくす設定） */
+.purchase-side-box {
+    border: 1px solid #333; /* 外枠 */
+    padding: 0;             /* ボックスの余白を0にすることで線を端まで届かせる */
+    margin-bottom: 50px;    /* ボタンとの間の隙間 */
+    background-color: #fff;
+}
+
+.summary-table {
+    width: 100%;
+    border-collapse: collapse; /* 線を一本に重ねる */
+}
+
+/* テーブルのセル（ここで左右の余白を作る） */
+.summary-table th,
+.summary-table td {
+    padding: 30px 25px; /* 上下に30px、左右に25pxの余白 */
+}
+
+/* 真ん中の仕切り線 */
+.summary-table tr:first-child th,
+.summary-table tr:first-child td {
+    border-bottom: 1px solid #333;
+}
+
+.summary-table th {
+    text-align: left;
+    font-weight: normal;
+    width: 45%;
+}
+
+.summary-table td {
+    text-align: right;
+    font-weight: bold;
+}
+
+/* --- 購入ボタン（ボックスの外） --- */
+.purchase-button {
+    width: 100%;
+    padding: 18px;
+    background-color: #ff5a5f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.purchase-button:disabled {
+    background-color: #ffb2b5;
+    cursor: not-allowed;
+}
+
+/* --- 支払い方法・配送先の共通パーツ --- */
 .selection-section h2 {
     font-size: 18px;
     margin-bottom: 15px;
-    color: #333;
 }
 
 .select-box {
-    width: 100%;
-    padding: 10px;
+    width: 60%;
+    padding: 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: #fff;
+    font-size: 16px;
 }
 
 .change-link {
@@ -67,68 +125,6 @@ hr {
     font-size: 14px;
 }
 
-.address-display p {
-    margin: 5px 0;
-    line-height: 1.6;
-}
-
-/* 右側サイドエリア */
-.purchase-side {
-    flex: 1;
-    border: 2px solid #333;
-    padding: 20px;
-    border-radius: 4px;
-}
-
-.summary-table {
-    width: 100%;
-    margin-bottom: 30px;
-    border-collapse: collapse;
-}
-
-.summary-table th, 
-.summary-table td {
-    padding: 15px 0;
-    text-align: left;
-}
-
-.summary-table th {
-    font-weight: normal;
-}
-
-.summary-table td {
-    text-align: right;
-}
-
-/* 購入ボタン */
-.purchase-button {
-    width: 100%;
-    padding: 15px;
-    background-color: #ff5a5f;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.purchase-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-.purchase-button:hover:not(:disabled) {
-    background-color: #e04b4f;
-}
-
-/* レスポンシブ対応 */
-@media (max-width: 768px) {
-    .purchase-content {
-        flex-direction: column;
-    }
-    .purchase-side {
-        width: 100%;
-    }
+.change-link:hover {
+    text-decoration: underline;
 }

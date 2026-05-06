@@ -91,4 +91,7 @@
         </div>
     </form>
 </div>
+
+<script src="{{ asset('js/sell.js') }}"></script>
+
 @endsection

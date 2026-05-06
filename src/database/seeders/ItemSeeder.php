@@ -5,8 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Item;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class ItemSeeder extends Seeder
 {
@@ -15,21 +16,31 @@ class ItemSeeder extends Seeder
      */
     public function run(): void
     {
-        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
-        \Illuminate\Support\Facades\DB::table('category_item')->truncate();
-        \App\Models\Item::truncate();
-        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
+        // 1. リセット処理（既存のデータとIDのカウントをリセット）
+        Schema::disableForeignKeyConstraints();
+        DB::table('category_item')->truncate();
+        Item::truncate();
+        Schema::enableForeignKeyConstraints();
+
+        // テストユーザーの取得（紐付け用）
         $user = User::where('email', 'test@example.com')->first();
 
+        // 2. カテゴリーの作成（全14項目）
         $categories = [
-            'ファッション', '家電', 'インテリア', 'レディース', 'メンズ',
-            'コスメ', '本', 'ゲーム', 'スポーツ', 'キッチン'
+            'ファッション', '家電', 'インテリア', 'レディース', 'メンズ', 
+            'コスメ', '本', 'ゲーム', 'スポーツ', 'キッチン', 
+            'ハンドメイド', 'アクセサリー', 'おもちゃ', 'ベビー・キッズ'
         ];
 
         foreach ($categories as $cat) {
             Category::firstOrCreate(['name' => $cat]);
         }
 
+        // 3. 【重要】カテゴリーの名簿（名前とIDのペア）を作成
+        // これを商品登録より先に書くことで、紐付けが成功します
+        $categoryMap = Category::pluck('id', 'name');
+
+        // 4. 商品データの定義（指示書の内容通り）
         $items = [
             [
                 'name' => '腕時計',
@@ -123,25 +134,31 @@ class ItemSeeder extends Seeder
             ],
         ];
 
+        // 5. 商品の保存とカテゴリーの紐付け
         foreach ($items as $itemData) {
             $item = Item::create($itemData);
 
-            $categoryName = match (true) {
-                str_contains($item->name, '腕時計') => 'ファッション',
-                str_contains($item->name, '革靴')   => 'ファッション',
-                str_contains($item->name, 'PC')     => '家電',
-                str_contains($item->name, 'HDD')    => '家電',
-                str_contains($item->name, 'マイク')  => '家電',
-                str_contains($item->name, 'メイク')  => 'コスメ',
-                str_contains($item->name, '玉ねぎ')  => 'キッチン',
-                str_contains($item->name, 'ミル')    => 'キッチン',
-                default => 'インテリア',
+            // 商品名に応じて紐付けるカテゴリーを決める
+            $targetNames = match ($item->name) {
+                '腕時計' => ['ファッション', 'メンズ'],
+                'HDD' => ['家電'],
+                '玉ねぎ3束' => ['キッチン'],
+                '革靴' => ['ファッション', 'メンズ'],
+                'ノートPC' => ['家電'],
+                'マイク' => ['家電'],
+                'ショルダーバッグ' => ['ファッション', 'レディース'],
+                'タンブラー' => ['キッチン', 'インテリア'],
+                'コーヒーミル' => ['キッチン'],
+                'メイクセット' => ['コスメ', 'レディース'],
+                default => ['インテリア'],
             };
 
-            $category = \App\Models\Category::where('name', $categoryName)->first();
-            if ($category) {
-                $item->categories()->attach($category->id);
+            // 名前をIDに変換して紐付け
+            $categoryIds = [];
+            foreach ($targetNames as $name) {
+                $categoryIds[] = $categoryMap[$name];
             }
+            $item->categories()->attach($categoryIds);
         }
     }
 }
