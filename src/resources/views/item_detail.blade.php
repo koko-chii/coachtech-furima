@@ -22,17 +22,14 @@
         {{-- アクション（いいね・コメントアイコン） --}}
         <div class="detail-actions">
             <div class="action-item">
-                <form action="/like/{{ $item->id }}/like" method="POST">
-                    @csrf
-                    <button type="submit" class="like-button">
-                        @if(Auth::check() && Auth::user()->likedItems->contains($item->id))
-                            <img src="{{ asset('img/liked.png') }}" alt="いいね済み" class="heart-icon">
-                        @else
-                            <img src="{{ asset('img/HeartLogo.png') }}" alt="いいね" class="heart-icon">
-                        @endif
-                    </button>
-                </form>
-                <span class="like-count">{{ $item->likedByUsers()->count() }}</span>
+                <button type="button" class="like-button" id="like-btn" data-item-id="{{ $item->id }}">
+                    @if(Auth::check() && Auth::user()->likedItems->contains($item->id))
+                        <img src="{{ asset('img/liked.png') }}" alt="いいね済み" class="heart-icon" id="heart-img">
+                    @else
+                        <img src="{{ asset('img/HeartLogo.png') }}" alt="いいね" class="heart-icon" id="heart-img">
+                    @endif
+                </button>
+                <span class="like-count" id="like-count">{{ $item->likedByUsers()->count() }}</span>
             </div>
 
             <div class="action-item">
@@ -113,4 +110,9 @@
         </div>
     </div> {{-- detail-info END --}}
 </div> {{-- detail-container END --}}
+
+@section('scripts')
+    <script src="{{ asset('js/like.js') }}"></script>
+@endsection
+
 @endsection

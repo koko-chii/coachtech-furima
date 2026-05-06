@@ -18,7 +18,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware(['auth', 'verified', 'ensure.profile.completed'])->group(function () {
 
-    Route::get('/mypage', [ProfileController::class, 'index'])->name('mypage');
+    Route::get('/mypage', [ProfileController::class, 'index'])
+        ->middleware(['auth', 'verified'])
+        ->name('mypage');
 
     Route::get('/sell', [SellController::class, 'sell'])->name('sell');
     Route::post('/sell', [SellController::class, 'store'])->name('item.store');

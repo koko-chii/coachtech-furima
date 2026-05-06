@@ -14,9 +14,12 @@ class ProfileController extends Controller
         $page = $request->query('page', 'sell');
 
         if ($page === 'buy') {
-            $items = $user->purchasedItems ?? [];
+            $items = \App\Models\Order::where('user_id', $user->id)
+                    ->with('item')
+                    ->get()
+                    ->pluck('item');
         } else {
-        $items = $user->items ?? [];
+            $items = $user->items()->get();
         }
 
         return view('mypage', compact('user','items', 'page'));

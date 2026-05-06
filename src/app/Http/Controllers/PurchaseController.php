@@ -10,7 +10,7 @@ use Stripe\Checkout\Session;
 
 class PurchaseController extends Controller
 {
-    // 1. 購入前商品情報取得機能：購入画面を表示する
+    // 購入前商品情報取得機能：購入画面を表示する
     public function showPurchasePage($item_id)
     {
         $item = Item::findOrFail($item_id);
@@ -25,7 +25,7 @@ class PurchaseController extends Controller
         return view('purchase', compact('item', 'user'));
     }
 
-    // 2. 支払い方法選択機能：Stripeの決済画面に接続する
+    // 支払い方法選択機能：Stripeの決済画面に接続する
     public function purchase(Request $request, $item_id)
     {
         $item = Item::findOrFail($item_id);
@@ -70,7 +70,7 @@ class PurchaseController extends Controller
         return redirect($session->url);
     }
 
-    // 3. 商品購入機能：決済成功後のDB更新処理
+    // 商品購入機能：決済成功後のDB更新処理
     public function success($item_id)
     {
         $item = Item::findOrFail($item_id);
@@ -80,9 +80,9 @@ class PurchaseController extends Controller
         // 要件：購入した商品を "sold" に更新
         $item->update(['is_sold' => true]);
 
-        // 要件：「プロフィール/購入した商品一覧」に追加 ＆ 各アイテムに住所を紐付け
-        // ※中間テーブル（item_userなど）に住所カラムがある想定
-        $user->purchasedItems()->attach($item->id, [
+        \App\Models\Order::create([
+            'user_id'  => $user->id,
+            'item_id'  => $item->id,
             'postcode' => $shipping['postcode'] ?? $user->postcode,
             'address'  => $shipping['address'] ?? $user->address,
             'building' => $shipping['building'] ?? $user->building,
